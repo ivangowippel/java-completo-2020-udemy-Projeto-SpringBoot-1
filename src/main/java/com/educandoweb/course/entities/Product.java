@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product") //altera o nome da tabela para não dar conflito com o sql
@@ -26,7 +28,9 @@ public class Product implements Serializable {
 	
 	//neste caso vamos utilizar o Set(representa um conjunto) ao ínves do List.
 	//Isso para garantir que não vou ter um produto com mais de uma ocorrência na mesma categoria
-	@Transient	//impede que o JPA interprete esse código
+	//@Transient	//impede que o JPA interprete esse código
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
 	public Product() {
